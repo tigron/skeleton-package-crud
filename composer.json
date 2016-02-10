@@ -7,7 +7,8 @@
 		"tigron/skeleton-pager": "*"
     },
     "require" : {
-        "bower-asset/bootstrap": "3.3.*"
+        "bower-asset/bootstrap": "3.3.*",
+        "bower-asset/tigron-confirm-modal": "*"
     },
     "license": "MIT",
     "authors": [
