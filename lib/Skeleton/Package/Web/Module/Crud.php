@@ -144,6 +144,22 @@ abstract class Crud extends Module {
 	}
 
 	/**
+	 * Delete
+	 *
+	 * @access public
+	 */
+	public function display_delete() {
+		/**
+		 * Get the pager
+		 */
+		$pager = $this->get_pager();
+		$classname = $pager->get_classname();
+		$object = $classname::get_by_id($_GET['id']);
+		$object->delete();
+		Session::redirect($_SERVER['REDIRECT_URL']);
+	}
+
+	/**
 	 * Get pager
 	 *
 	 * @access public

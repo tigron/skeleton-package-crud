@@ -9,6 +9,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">{% trans "Create" %} {{ pager.get_classname()|capitalize }}</div>
 		<div class="panel-body">
+
 			{% for definition in default_fields %}
 				<div class="form-group">
 					<label class="col-xs-3 control-label">{{ definition.field|capitalize }}</label>
@@ -17,7 +18,6 @@
 
 					</div>
 				</div>
-
 			{% endfor %}
 
 			<div class="form-group">
@@ -71,7 +71,7 @@
 		<li class="active">{{ pager.get_classname()|capitalize }}</li>
 	</ul>
 	<div class="panel panel-default">
-		<div class="panel-heading">{% trans "Customers" %}</div>
+		<div class="panel-heading">{{ pager.get_classname()|capitalize }}</div>
 		<div class="panel-body">
 			<form action="{{ env.server.REQUEST_URI }}" method="post" class="form-horizontal">
 				<div class="form-group">
@@ -103,27 +103,31 @@
 			<table class="table table-striped table-hover table-condensed">
 			<thead>
 				<tr>
-					{% for definition in default_fields %}
-						<th>{{ pager.create_header(definition.field, definition.field) }}</th>
-					{% endfor %}
+					{% block pager_table_head %}
+						{% for definition in default_fields %}
+							<th>{{ pager.create_header(definition.field, definition.field) }}</th>
+						{% endfor %}
+					{% endblock pager_table_head %}
 					<th>&nbsp;</th>
 					<th>&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
-				{% for item in pager.items %}
+				{% for object in pager.items %}
 					<tr>
-						{% for definition in default_fields %}
-							<td>{{ attribute(item, definition.field) }}</td>
-						{% endfor %}
+						{% block pager_table_row %}
+							{% for definition in default_fields %}
+								<td>{{ attribute(object, definition.field) }}</td>
+							{% endfor %}
+						{% endblock pager_table_row %}
 						<td>
-							<a href="{{ env.server.REQUEST_URI }}?action=edit&id={{ item.id }}" data-toggle="tooltip" title="{% trans "Edit object" %}">
+							<a href="{{ env.server.REQUEST_URI }}?action=edit&id={{ object.id }}" data-toggle="tooltip" title="{% trans "Edit object" %}">
 								<span class="glyphicon glyphicon-pencil"></span>
 							</a>
 						</td>
 
 						<td>
-							<a href="{{ env.server.REDIRECT_URI }}?action=delete&id={{ item.id }}" data-confirm-title="{% trans "Please confirm" %}" data-confirm-message="{% trans "Are you sure you want to delete this object?" %}">
+							<a href="{{ env.server.REDIRECT_URI }}?action=delete&id={{ object.id }}" data-confirm-title="{% trans "Please confirm" %}" data-confirm-message="{% trans "Are you sure you want to delete this object?" %}">
 								<span class="glyphicon glyphicon-trash"></span>
 							</a>
 						</td>
@@ -135,6 +139,8 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		$('a[data-confirm-message]').confirmModal();
+		$(document).ready(function() {
+			$('a[data-confirm-message]').confirmModal();
+		});
 	</script>
 {% endif %}
