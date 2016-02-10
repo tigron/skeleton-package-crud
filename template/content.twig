@@ -121,13 +121,13 @@
 							{% endfor %}
 						{% endblock pager_table_row %}
 						<td>
-							<a href="{{ env.server.REQUEST_URI }}?action=edit&id={{ object.id }}" data-toggle="tooltip" title="{% trans "Edit object" %}">
+							<a href="/{{ env.server.REDIRECT_URL }}?action=edit&id={{ object.id }}" data-toggle="tooltip" title="{% trans "Edit object" %}">
 								<span class="glyphicon glyphicon-pencil"></span>
 							</a>
 						</td>
 
 						<td>
-							<a href="{{ env.server.REDIRECT_URI }}?action=delete&id={{ object.id }}" data-confirm-title="{% trans "Please confirm" %}" data-confirm-message="{% trans "Are you sure you want to delete this object?" %}">
+							<a href="/{{ env.server.REDIRECT_URL }}?action=delete&id={{ object.id }}" data-confirm-title="{% trans "Please confirm" %}" data-confirm-message="{% trans "Are you sure you want to delete this object?" %}">
 								<span class="glyphicon glyphicon-trash"></span>
 							</a>
 						</td>
