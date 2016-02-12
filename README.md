@@ -83,3 +83,16 @@ Table row for pager
 			<td>{{ attribute(object, definition.field) }}</td>
 		{% endfor %}
 	{% endblock pager_table_row %}
+
+In the module, you can use the following methods to configure the CRUD behavior
+
+	/**
+	 * Is deletable
+	 *
+	 * @access public
+	 * @param Object $object
+	 * @return bool $deletable
+	 */
+	public function is_deletable($object) {
+		return true;
+	}

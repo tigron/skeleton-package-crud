@@ -57,6 +57,17 @@ abstract class Crud extends Module {
 		$template->assign('pager', $pager);
 
 		/**
+		 * Find the deletables
+		 */
+		$deletables = [];
+		foreach ($pager->items as $item) {
+			if ($this->is_deletable($item)) {
+				$deletables[] = $item->id;
+			}
+		}
+		$template->assign('deletables', $deletables);
+
+		/**
 		 * Get default fields for pager
 		 */
 		$classname = $pager->get_classname();
@@ -99,7 +110,6 @@ abstract class Crud extends Module {
 		}
 		$template->assign('default_fields', $fields);
 
-
 		if (isset($_POST['object'])) {
 			$object->load_array($_POST['object']);
 			$object->save();
@@ -141,6 +151,17 @@ abstract class Crud extends Module {
 			}
 		}
 		$template->assign('default_fields', $fields);
+	}
+
+	/**
+	 * Is deletable
+	 *
+	 * @access public
+	 * @param Object $object
+	 * @return bool $deletable
+	 */
+	public function is_deletable($object) {
+		return true;
 	}
 
 	/**
