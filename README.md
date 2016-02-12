@@ -24,7 +24,7 @@ Create a module in your application that extends from Skeleton\Package\Web\Modul
 	 * @author David Vandemaele <david@tigron.be>
 	 */
 
-	use Skeleton\Package\Web\Module\Crud
+	use Skeleton\Package\Crud\Web\Module\Crud
 
 	class Web_Module_User extends Crud {
 
