@@ -1,7 +1,13 @@
+{% macro pager_count(item_count) %}
+	{{ item_count }}
+	{% if item_count == 1 %}{% trans "result" %}
+	{% else %}{% trans "results" %}{% endif %}
+{% endmacro %}
+
 {% if action == 'create' %}
 	<ul class="breadcrumb">
 		<li><a href="/">{% trans "Root" %}</a></li>
-		<li><a href="{{ env.server.REDIRECT_URL }}">{{ pager.get_classname()|capitalize }}</a></li>
+		<li><a href="{{ env.module.get_module_path() }}">{{ pager.get_classname()|capitalize }}</a></li>
 		<li class="active">{% trans "Create" %} {{ pager.get_classname()|capitalize }} {{ object.id }}</li>
 	</ul>
 
@@ -32,7 +38,7 @@
 	{% block page_edit %}
 	<ul class="breadcrumb">
 		<li><a href="/">{% trans "Root" %}</a></li>
-		<li><a href="{{ env.server.REDIRECT_URL }}">{{ pager.get_classname()|capitalize }}</a></li>
+		<li><a href="{{ env.module.get_module_path() }}">{{ pager.get_classname()|capitalize }}</a></li>
 		<li class="active">{% trans "Edit" %} {{ pager.get_classname()|capitalize }} {{ object.id }}</li>
 	</ul>
 
@@ -42,7 +48,7 @@
 		</div>
 	{% endif %}
 
-	<form class="form-horizontal form-condensed" method="post" action="{{ env.server.REQUEST_URI }}">
+	<form class="form-horizontal form-condensed" method="post" action="{{ env.module.get_module_path() }}">
 	<div class="panel panel-default">
 		<div class="panel-heading">{% trans "Edit" %} {{ pager.get_classname()|capitalize }} {{ object.id }}</div>
 		<div class="panel-body">
@@ -75,7 +81,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">{{ pager.get_classname()|capitalize }}</div>
 		<div class="panel-body">
-			<form action="{{ env.server.REQUEST_URI }}" method="post" class="form-horizontal">
+			<form action="{{ env.module.get_module_path() }}" method="post" class="form-horizontal">
 				<div class="form-group">
 					<label class="control-label col-lg-2">{% trans "Search" %} </label>
 					<div class="controls col-lg-10">
@@ -93,10 +99,10 @@
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			{{ base.pager_count(pager.item_count) }}
+			{{ pager.item_count }} {% if pager.item_count == 1 %}{% trans "result" %}{% else %}{% trans "results" %}{% endif %}
 
 			<div class="pull-right">
-				<a href="{{ env.server.REDIRECT_URI }}?action=create">
+				<a href="{{ env.module.get_module_path() }}?action=create">
 					<span class="glyphicon glyphicon-plus-sign"></span>	{% trans "Add" %} {{ pager.get_classname() }}
 				</a>
 			</div>
@@ -125,14 +131,14 @@
 							{% endfor %}
 						{% endblock pager_table_row %}
 						<td>
-							<a href="/{{ env.server.REDIRECT_URL }}?action=edit&id={{ object.id }}" data-toggle="tooltip" title="{% trans "Edit object" %}">
+							<a href="/{{ env.module.get_module_path() }}?action=edit&id={{ object.id }}" data-toggle="tooltip" title="{% trans "Edit object" %}">
 								<span class="glyphicon glyphicon-pencil"></span>
 							</a>
 						</td>
 
 						{% if object.id in deletables %}
 						<td>
-							<a href="/{{ env.server.REDIRECT_URL }}?action=delete&id={{ object.id }}" data-confirm-title="{% trans "Please confirm" %}" data-confirm-message="{% trans "Are you sure you want to delete this object?" %}">
+							<a href="/{{ env.module.get_module_path() }}?action=delete&id={{ object.id }}" data-confirm-title="{% trans "Please confirm" %}" data-confirm-message="{% trans "Are you sure you want to delete this object?" %}">
 								<span class="glyphicon glyphicon-trash"></span>
 							</a>
 						</td>
