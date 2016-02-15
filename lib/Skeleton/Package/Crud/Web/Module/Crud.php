@@ -112,9 +112,19 @@ abstract class Crud extends Module {
 
 		if (isset($_POST['object'])) {
 			$object->load_array($_POST['object']);
-			$object->save();
-			Session::set_sticky('message', 'object_updated');
-			Session::redirect($_SERVER['REQUEST_URI']);
+			if (is_callable( [$object, 'validate'] )) {
+				$object->validate($errors);
+			} else {
+				$errors = [];
+			}
+
+			if (count($errors) > 0) {
+				$template->assign('errors', $errors);
+			} else {
+				$object->save();
+				Session::set_sticky('message', 'object_updated');
+				Session::redirect($this->get_module_path() . '?action=edit&id=' . $object->id);
+			}
 		}
 	}
 

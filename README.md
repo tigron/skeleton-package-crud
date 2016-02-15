@@ -84,6 +84,24 @@ Table row for pager
 		{% endfor %}
 	{% endblock pager_table_row %}
 
+Form for object creation
+
+	{% block form_create %}
+		{#
+			Insert a complete form for object creation here.
+			Make sure that an array with key object[field] is posted
+		#}
+	{% endblock form_create %}
+
+Form for edit object
+
+	{% block form_edit %}
+		{#
+			Insert a complete form for editing the object here.
+			Make sure that an array with key object[field] is posted
+		#}
+	{% endblock form_edit %}
+
 In the module, you can use the following methods to configure the CRUD behavior
 
 	/**

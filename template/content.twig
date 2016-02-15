@@ -1,8 +1,21 @@
-{% macro pager_count(item_count) %}
-	{{ item_count }}
-	{% if item_count == 1 %}{% trans "result" %}
-	{% else %}{% trans "results" %}{% endif %}
-{% endmacro %}
+{% if errors is defined %}
+<script type="text/javascript">
+	validation_errors = {{ errors|json_encode|raw }};
+	messages = {
+		'required': "{% trans "This field is required." %}",
+		'already_exists': "{% trans "The e-mail address has already been entered before." %}",
+		'invalid_email': "{% trans "The e-mail address is invalid." %}"
+	}
+
+	$(document).ready(function() {
+		$.each( validation_errors, function(index, value) {
+			$("[name='object[" + index + "]']").parents('.form-group').addClass('has-error');
+			$("[name='object[" + index + "]']").after('<div class="help-block"><span class="glyphicon glyphicon-exclamation-sign"></span>' + messages[value] + '</div>');
+		});
+	});
+</script>
+{% endif %}
+
 
 {% if action == 'create' %}
 	<ul class="breadcrumb">
@@ -11,20 +24,26 @@
 		<li class="active">{% trans "Create" %} {{ pager.get_classname()|capitalize }} {{ object.id }}</li>
 	</ul>
 
-	<form class="form-horizontal form-condensed" method="post" action="{{ env.server.REQUEST_URI }}">
+	{% if errors is defined %}
+		<div class="alert alert-danger">
+			{% trans "There were errors in the information you filled in." %} {% trans "Please review the input fields below." %}
+		</div>
+	{% endif %}
+
+	<form class="form-horizontal form-condensed" method="post" action="{{ env.module.get_module_path() }}?action=create">
 	<div class="panel panel-default">
 		<div class="panel-heading">{% trans "Create" %} {{ pager.get_classname()|capitalize }}</div>
 		<div class="panel-body">
-
-			{% for definition in default_fields %}
-				<div class="form-group">
-					<label class="col-xs-3 control-label">{{ definition.field|capitalize }}</label>
-					<div class="col-xs-9">
-						<input type="text" name="object[{{ definition.field }}]" class="form-control" value="{{ attribute(object, definition.field) }}" />
-
+			{% block form_create %}
+				{% for definition in default_fields %}
+					<div class="form-group">
+						<label class="col-xs-3 control-label">{{ definition.field|capitalize }}</label>
+						<div class="col-xs-9">
+							<input type="text" name="object[{{ definition.field }}]" class="form-control" value="{{ attribute(object, definition.field) }}" />
+						</div>
 					</div>
-				</div>
-			{% endfor %}
+				{% endfor %}
+			{% endblock form_create %}
 
 			<div class="form-group">
 				<div class="col-xs-9 col-xs-offset-3">
@@ -48,20 +67,27 @@
 		</div>
 	{% endif %}
 
-	<form class="form-horizontal form-condensed" method="post" action="{{ env.module.get_module_path() }}">
+	{% if errors is defined %}
+		<div class="alert alert-danger">
+			{% trans "There were errors in the information you filled in." %} {% trans "Please review the input fields below." %}
+		</div>
+	{% endif %}
+
+	<form class="form-horizontal form-condensed" method="post" action="{{ env.module.get_module_path() }}?action=edit&id={{ object.id }}">
 	<div class="panel panel-default">
 		<div class="panel-heading">{% trans "Edit" %} {{ pager.get_classname()|capitalize }} {{ object.id }}</div>
 		<div class="panel-body">
-			{% for definition in default_fields %}
-				<div class="form-group">
-					<label class="col-xs-3 control-label">{{ definition.field|capitalize }}</label>
-					<div class="col-xs-9">
-						<input type="text" name="object[{{ definition.field }}]" class="form-control" value="{{ attribute(object, definition.field) }}" />
+			{% block form_edit %}
+				{% for definition in default_fields %}
+					<div class="form-group">
+						<label class="col-xs-3 control-label">{{ definition.field|capitalize }}</label>
+						<div class="col-xs-9">
+							<input type="text" name="object[{{ definition.field }}]" class="form-control" value="{{ attribute(object, definition.field) }}" />
 
+						</div>
 					</div>
-				</div>
-
-			{% endfor %}
+				{% endfor %}
+			{% endblock form_edit %}
 
 			<div class="form-group">
 				<div class="col-xs-9 col-xs-offset-3">
@@ -72,7 +98,6 @@
 	</div>
 	</form>
 	{% endblock page_edit %}
-
 {% else %}
 	<ul class="breadcrumb">
 		<li><a href="/">{% trans "Root" %}</a></li>
