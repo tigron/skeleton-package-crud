@@ -50,7 +50,7 @@ Create a template for your module that injects the generated templates into your
 	{% endblock header_css %}
 
 	{% block content %}
-		{% embed "@skeleton-package-crud/content.twig" %}{% endembed %}
+		{% embed "@skeleton-package-crud/content.twig" with {'object_name': 'My object'} %}{% endembed %}
 	{% endblock content %}
 
 

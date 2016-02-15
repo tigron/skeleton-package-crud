@@ -20,8 +20,8 @@
 {% if action == 'create' %}
 	<ul class="breadcrumb">
 		<li><a href="/">{% trans "Root" %}</a></li>
-		<li><a href="{{ env.module.get_module_path() }}">{{ pager.get_classname()|capitalize }}</a></li>
-		<li class="active">{% trans "Create" %} {{ pager.get_classname()|capitalize }} {{ object.id }}</li>
+		<li><a href="{{ env.module.get_module_path() }}">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</a></li>
+		<li class="active">{% trans "Create" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</li>
 	</ul>
 
 	{% if errors is defined %}
@@ -32,7 +32,7 @@
 
 	<form class="form-horizontal form-condensed" method="post" action="{{ env.module.get_module_path() }}?action=create">
 	<div class="panel panel-default">
-		<div class="panel-heading">{% trans "Create" %} {{ pager.get_classname()|capitalize }}</div>
+		<div class="panel-heading">{% trans "Create" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</div>
 		<div class="panel-body">
 			{% block form_create %}
 				{% for definition in default_fields %}
@@ -57,8 +57,8 @@
 	{% block page_edit %}
 	<ul class="breadcrumb">
 		<li><a href="/">{% trans "Root" %}</a></li>
-		<li><a href="{{ env.module.get_module_path() }}">{{ pager.get_classname()|capitalize }}</a></li>
-		<li class="active">{% trans "Edit" %} {{ pager.get_classname()|capitalize }} {{ object.id }}</li>
+		<li><a href="{{ env.module.get_module_path() }}">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</a></li>
+		<li class="active">{% trans "Edit" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %} {{ object.id }}</li>
 	</ul>
 
 	{% if env.sticky_session.message == 'object_updated' %}
@@ -75,7 +75,7 @@
 
 	<form class="form-horizontal form-condensed" method="post" action="{{ env.module.get_module_path() }}?action=edit&id={{ object.id }}">
 	<div class="panel panel-default">
-		<div class="panel-heading">{% trans "Edit" %} {{ pager.get_classname()|capitalize }} {{ object.id }}</div>
+		<div class="panel-heading">{% trans "Edit" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %} {{ object.id }}</div>
 		<div class="panel-body">
 			{% block form_edit %}
 				{% for definition in default_fields %}
@@ -101,10 +101,10 @@
 {% else %}
 	<ul class="breadcrumb">
 		<li><a href="/">{% trans "Root" %}</a></li>
-		<li class="active">{{ pager.get_classname()|capitalize }}</li>
+		<li class="active">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</li>
 	</ul>
 	<div class="panel panel-default">
-		<div class="panel-heading">{{ pager.get_classname()|capitalize }}</div>
+		<div class="panel-heading">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</div>
 		<div class="panel-body">
 			<form action="{{ env.module.get_module_path() }}" method="post" class="form-horizontal">
 				<div class="form-group">
@@ -128,51 +128,55 @@
 
 			<div class="pull-right">
 				<a href="{{ env.module.get_module_path() }}?action=create">
-					<span class="glyphicon glyphicon-plus-sign"></span>	{% trans "Add" %} {{ pager.get_classname() }}
+					<span class="glyphicon glyphicon-plus-sign"></span>	{% trans "Add" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}
 				</a>
 			</div>
 		</div>
 		<div class="panel-body">
-			<table class="table table-striped table-hover table-condensed">
-			<thead>
-				<tr>
-					{% block pager_table_head %}
-						{% for definition in default_fields %}
-							<th>{{ pager.create_header(definition.field, definition.field) }}</th>
-						{% endfor %}
-					{% endblock pager_table_head %}
-					<th>&nbsp;</th>
-					{% if deletables|length > 0 %}
-						<th>&nbsp;</th>
-					{% endif %}
-				</tr>
-			</thead>
-			<tbody>
-				{% for object in pager.items %}
+			{% if pager.items|length > 0 %}
+				<table class="table table-striped table-hover table-condensed">
+				<thead>
 					<tr>
-						{% block pager_table_row %}
+						{% block pager_table_head %}
 							{% for definition in default_fields %}
-								<td>{{ attribute(object, definition.field) }}</td>
+								<th>{{ pager.create_header(definition.field, definition.field) }}</th>
 							{% endfor %}
-						{% endblock pager_table_row %}
-						<td>
-							<a href="/{{ env.module.get_module_path() }}?action=edit&id={{ object.id }}" data-toggle="tooltip" title="{% trans "Edit object" %}">
-								<span class="glyphicon glyphicon-pencil"></span>
-							</a>
-						</td>
-
-						{% if object.id in deletables %}
-						<td>
-							<a href="/{{ env.module.get_module_path() }}?action=delete&id={{ object.id }}" data-confirm-title="{% trans "Please confirm" %}" data-confirm-message="{% trans "Are you sure you want to delete this object?" %}">
-								<span class="glyphicon glyphicon-trash"></span>
-							</a>
-						</td>
+						{% endblock pager_table_head %}
+						<th width="20">&nbsp;</th>
+						{% if deletables|length > 0 %}
+							<th width="20">&nbsp;</th>
 						{% endif %}
 					</tr>
-				{% endfor %}
-			</tbody>
-			</table>
-			{{ pager.links|raw }}
+				</thead>
+				<tbody>
+					{% for object in pager.items %}
+						<tr>
+							{% block pager_table_row %}
+								{% for definition in default_fields %}
+									<td>{{ attribute(object, definition.field) }}</td>
+								{% endfor %}
+							{% endblock pager_table_row %}
+							<td>
+								<a href="/{{ env.module.get_module_path() }}?action=edit&id={{ object.id }}" data-toggle="tooltip" title="{% trans "Edit object" %}">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</a>
+							</td>
+
+							{% if object.id in deletables %}
+							<td>
+								<a href="/{{ env.module.get_module_path() }}?action=delete&id={{ object.id }}" data-confirm-title="{% trans "Please confirm" %}" data-confirm-message="{% trans "Are you sure you want to delete this object?" %}">
+									<span class="glyphicon glyphicon-trash"></span>
+								</a>
+							</td>
+							{% endif %}
+						</tr>
+					{% endfor %}
+				</tbody>
+				</table>
+				{{ pager.links|raw }}
+			{% else %}
+				<div class="alert alert-info">{% trans "There are no objects that match your search criteria." %}</div>
+			{% endif %}
 		</div>
 	</div>
 	<script type="text/javascript">

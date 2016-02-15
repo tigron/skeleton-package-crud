@@ -146,7 +146,7 @@ abstract class Crud extends Module {
 			$object = new $classname();
 			$object->load_array($_POST['object']);
 			$object->save();
-			Session::redirect($_SERVER['REDIRECT_URL'] . '?action=edit&id=' . $object->id);
+			Session::redirect($this->get_module_path() . '?action=edit&id=' . $object->id);
 		}
 
 		$template->assign('pager', $pager);
@@ -187,7 +187,7 @@ abstract class Crud extends Module {
 		$classname = $pager->get_classname();
 		$object = $classname::get_by_id($_GET['id']);
 		$object->delete();
-		Session::redirect($_SERVER['REDIRECT_URL']);
+		Session::redirect($this->get_module_path());
 	}
 
 	/**
