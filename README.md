@@ -102,6 +102,24 @@ Form for edit object
 		#}
 	{% endblock form_edit %}
 
+Page Create
+
+	{% block page_create %}
+		{#
+			Insert a complete page for creating the object here
+			Make sure that an array with key object[field] is posted
+		#}
+	{% endblock page_create %}
+
+Page Edit
+
+	{% block page_edit %}
+		{#
+			Insert a complete page for editing the object here
+			Make sure that an array with key object[field] is posted
+		#}
+	{% endblock page_edit %}
+
 In the module, you can use the following methods to configure the CRUD behavior
 
 	/**

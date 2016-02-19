@@ -18,6 +18,7 @@
 
 
 {% if action == 'create' %}
+	{% block page_create %}
 	<ul class="breadcrumb">
 		<li><a href="/">{% trans "Root" %}</a></li>
 		<li><a href="{{ env.module.get_module_path() }}">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</a></li>
@@ -53,6 +54,7 @@
 		</div>
 	</div>
 	</form>
+	{% endblock page_create %}
 {% elseif action == 'edit' %}
 	{% block page_edit %}
 	<ul class="breadcrumb">
@@ -98,6 +100,8 @@
 	</div>
 	</form>
 	{% endblock page_edit %}
+{% elseif action is defined %}
+	{% block page %}{% endblock page %}
 {% else %}
 	<ul class="breadcrumb">
 		<li><a href="/">{% trans "Root" %}</a></li>
@@ -139,7 +143,7 @@
 					<tr>
 						{% block pager_table_head %}
 							{% for definition in default_fields %}
-								<th>{{ pager.create_header(definition.field, definition.field) }}</th>
+								<th>{{ pager.create_header(definition.field, definition.field)|raw }}</th>
 							{% endfor %}
 						{% endblock pager_table_head %}
 						<th width="20">&nbsp;</th>
