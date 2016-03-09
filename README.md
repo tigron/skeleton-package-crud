@@ -120,6 +120,15 @@ Page Edit
 		#}
 	{% endblock page_edit %}
 
+Page Edit Footer
+
+	{% block page_edit_footer %}
+		{#
+			This is a part of block page_edit just below the edit form
+			This can be used to show additional information about the object
+		#}
+	{% endblock page_edit_footer %}
+
 In the module, you can use the following methods to configure the CRUD behavior
 
 	/**

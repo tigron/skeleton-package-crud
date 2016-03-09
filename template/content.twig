@@ -19,11 +19,13 @@
 
 {% if action == 'create' %}
 	{% block page_create %}
-	<ul class="breadcrumb">
-		<li><a href="/">{% trans "Root" %}</a></li>
-		<li><a href="{{ env.module.get_module_path() }}">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</a></li>
-		<li class="active">{% trans "Create" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</li>
-	</ul>
+	{% block page_create_breadcrumb %}
+		<ul class="breadcrumb">
+			<li><a href="/">{% trans "Root" %}</a></li>
+			<li><a href="{{ env.module.get_module_path() }}">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</a></li>
+			<li class="active">{% trans "Create" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</li>
+		</ul>
+	{% endblock page_create_breadcrumb %}
 
 	{% if errors is defined %}
 		<div class="alert alert-danger">
@@ -57,11 +59,13 @@
 	{% endblock page_create %}
 {% elseif action == 'edit' %}
 	{% block page_edit %}
-	<ul class="breadcrumb">
-		<li><a href="/">{% trans "Root" %}</a></li>
-		<li><a href="{{ env.module.get_module_path() }}">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</a></li>
-		<li class="active">{% trans "Edit" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %} {{ object.id }}</li>
-	</ul>
+		{% block page_edit_breadcrumb %}
+			<ul class="breadcrumb">
+				<li><a href="/">{% trans "Root" %}</a></li>
+				<li><a href="{{ env.module.get_module_path() }}">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</a></li>
+				<li class="active">{% trans "Edit" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %} {{ object.id }}</li>
+			</ul>
+		{% endblock page_edit_breadcrumb %}
 
 	{% if env.sticky_session.message == 'object_updated' %}
 		<div class="alert alert-success">
@@ -99,6 +103,7 @@
 		</div>
 	</div>
 	</form>
+	{% block page_edit_footer %}{% endblock page_edit_footer %}
 	{% endblock page_edit %}
 {% elseif action is defined %}
 	{% block page %}{% endblock page %}
