@@ -116,12 +116,14 @@
 		<div class="panel-heading">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</div>
 		<div class="panel-body">
 			<form action="{{ env.module.get_module_path() }}" method="post" class="form-horizontal">
+				{% block pager_filters %}
 				<div class="form-group">
 					<label class="control-label col-lg-2">{% trans "Search" %} </label>
 					<div class="controls col-lg-10">
 						<input type="text" class="form-control" name="search" value="{{ pager.get_search() }}"/>
 					</div>
 				</div>
+				{% endblock pager_filters %}
 				<div class="form-group">
 					<div class="controls col-lg-offset-2 col-lg-5">
 						<button type="submit" class="btn btn-primary">{% trans "Search" %}</button>

@@ -68,6 +68,17 @@ Create a route in your application Config.php
 In embed "@skeleton-package-crud/content.twig there are blocks available to customize the CRUD module.
 Below you can find the list of blocks with their default content:
 
+Filters for pager
+
+	{% block pager_filters %}
+		<div class="form-group">
+			<label class="control-label col-lg-2">{% trans "Search" %} </label>
+			<div class="controls col-lg-10">
+				<input type="text" class="form-control" name="search" value="{{ pager.get_search() }}"/>
+			</div>
+		</div>
+	{% endblock pager_filters %}
+
 Table header for pager
 
 	{% block pager_table_head %}
