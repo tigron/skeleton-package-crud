@@ -13,6 +13,8 @@ Installation via composer:
 
 ## Howto
 
+### Module
+
 Create a module in your application that extends from Skeleton\Package\Web\Module\Crud
 
     <?php
@@ -37,7 +39,7 @@ Create a module in your application that extends from Skeleton\Package\Web\Modul
 
 		/**
 		 * Get the pager object
-		 * 
+		 *
 		 * @access public
 		 * @return Pager $pager
 		 */
@@ -45,10 +47,22 @@ Create a module in your application that extends from Skeleton\Package\Web\Modul
 		}
 	}
 
+	Create a route in your application Config.php
+
+		/**
+		 * Routes
+		 */
+		'routes' => [
+			'web_module_user' => [
+				'$language/user'
+			],
+		]
+
+### Template
+
 Create a template for your module that injects the generated templates into your layout
 
 	{% extends "_default/layout.base.twig" %}
-
 
 	{% block header_js %}
 		{% embed "@skeleton-package-crud/javascript.twig" %}{% endembed %}
@@ -62,20 +76,12 @@ Create a template for your module that injects the generated templates into your
 		{% embed "@skeleton-package-crud/content.twig" with {'object_name': 'My object'} %}{% endembed %}
 	{% endblock content %}
 
-
-Create a route in your application Config.php
-
-	/**
-	 * Routes
-	 */
-	'routes' => [
-		'web_module_user' => [
-			'$language/user'
-		],
-	]
+### Template blocks
 
 In embed "@skeleton-package-crud/content.twig there are blocks available to customize the CRUD module.
 Below you can find the list of blocks with their default content:
+
+#### Page 'Pager'
 
 Filters for pager
 
@@ -87,6 +93,15 @@ Filters for pager
 			</div>
 		</div>
 	{% endblock pager_filters %}
+
+Breadcrumbs
+
+	{% block page_pager_breadcrumb %}
+		{#
+			Insert the full breadcrumbs for the edit page
+		#}
+	{% endblock page_pager_breadcrumb %}
+
 
 Table header for pager
 
@@ -104,6 +119,8 @@ Table row for pager
 		{% endfor %}
 	{% endblock pager_table_row %}
 
+#### Page 'create'
+
 Form for object creation
 
 	{% block form_create %}
@@ -112,6 +129,34 @@ Form for object creation
 			Make sure that an array with key object[field] is posted
 		#}
 	{% endblock form_create %}
+
+Breadcrumbs
+
+	{% block page_create_breadcrumb %}
+		{#
+			Insert the full breadcrumbs for the create page
+		#}
+	{% endblock page_create_breadcrumb %}
+
+Page Create
+
+	{% block page_create %}
+		{#
+			Insert a complete page for creating the object here
+			Make sure that an array with key object[field] is posted
+		#}
+	{% endblock page_create %}
+
+Page Create Footer
+
+	{% block page_create_footer %}
+		{#
+			This is a part of block page_create just below the edit form
+			This can be used to show additional information about the object
+		#}
+	{% endblock page_create_footer %}
+
+#### Page 'edit'
 
 Form for edit object
 
@@ -122,14 +167,13 @@ Form for edit object
 		#}
 	{% endblock form_edit %}
 
-Page Create
+Breadcrumbs
 
-	{% block page_create %}
+	{% block page_edit_breadcrumb %}
 		{#
-			Insert a complete page for creating the object here
-			Make sure that an array with key object[field] is posted
+			Insert the full breadcrumbs for the edit page
 		#}
-	{% endblock page_create %}
+	{% endblock page_edit_breadcrumb %}
 
 Page Edit
 
@@ -148,6 +192,9 @@ Page Edit Footer
 			This can be used to show additional information about the object
 		#}
 	{% endblock page_edit_footer %}
+
+
+### Module methods
 
 In the module, you can use the following methods to configure the CRUD behavior
 

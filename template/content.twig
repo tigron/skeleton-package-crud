@@ -56,6 +56,7 @@
 		</div>
 	</div>
 	</form>
+	{% block page_create_footer %}{% endblock page_create_footer %}
 	{% endblock page_create %}
 {% elseif action == 'edit' %}
 	{% block page_edit %}
@@ -108,10 +109,12 @@
 {% elseif action is defined %}
 	{% block page %}{% endblock page %}
 {% else %}
-	<ul class="breadcrumb">
-		<li><a href="/">{% trans "Home" %}</a></li>
-		<li class="active">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</li>
-	</ul>
+	{% block page_pager_breadcrumb %}
+		<ul class="breadcrumb">
+			<li><a href="/">{% trans "Home" %}</a></li>
+			<li class="active">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</li>
+		</ul>
+	{% endblock page_pager_breadcrumb %}
 	<div class="panel panel-default">
 		<div class="panel-heading">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</div>
 		<div class="panel-body">

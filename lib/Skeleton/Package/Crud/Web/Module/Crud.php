@@ -166,7 +166,11 @@ abstract class Crud extends Module {
 			$object = new $classname();
 			$object->load_array($_POST['object']);
 			$object->save();
-			Session::redirect($this->get_module_path() . '?action=edit&id=' . $object->id);
+			if ($this->is_editable($object)) {
+				Session::redirect($this->get_module_path() . '?action=edit&id=' . $object->id);
+			} else {
+				Session::redirect($this->get_module_path());
+			}
 		}
 
 		$template->assign('pager', $pager);
