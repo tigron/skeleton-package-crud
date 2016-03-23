@@ -152,3 +152,24 @@ In the module, you can use the following methods to configure the CRUD behavior
 	public function is_deletable($object) {
 		return true;
 	}
+
+	/**
+	 * Is editable
+	 *
+	 * @access public
+	 * @param Object $object
+	 * @return bool $editable
+	 */
+	public function is_editable($object) {
+		return true;
+	}
+
+	/**
+	 * Is creatable
+	 *
+	 * @access public
+	 * @return bool $creatable
+	 */
+	public function is_creatable() {
+		return true;
+	}

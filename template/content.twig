@@ -21,7 +21,7 @@
 	{% block page_create %}
 	{% block page_create_breadcrumb %}
 		<ul class="breadcrumb">
-			<li><a href="/">{% trans "Root" %}</a></li>
+			<li><a href="/">{% trans "Home" %}</a></li>
 			<li><a href="{{ env.module.get_module_path() }}">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</a></li>
 			<li class="active">{% trans "Create" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</li>
 		</ul>
@@ -61,7 +61,7 @@
 	{% block page_edit %}
 		{% block page_edit_breadcrumb %}
 			<ul class="breadcrumb">
-				<li><a href="/">{% trans "Root" %}</a></li>
+				<li><a href="/">{% trans "Home" %}</a></li>
 				<li><a href="{{ env.module.get_module_path() }}">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</a></li>
 				<li class="active">{% trans "Edit" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %} {{ object.id }}</li>
 			</ul>
@@ -109,7 +109,7 @@
 	{% block page %}{% endblock page %}
 {% else %}
 	<ul class="breadcrumb">
-		<li><a href="/">{% trans "Root" %}</a></li>
+		<li><a href="/">{% trans "Home" %}</a></li>
 		<li class="active">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</li>
 	</ul>
 	<div class="panel panel-default">
@@ -118,14 +118,14 @@
 			<form action="{{ env.module.get_module_path() }}" method="post" class="form-horizontal">
 				{% block pager_filters %}
 				<div class="form-group">
-					<label class="control-label col-lg-2">{% trans "Search" %} </label>
-					<div class="controls col-lg-10">
+					<label class="control-label col-xs-3">{% trans "Search" %} </label>
+					<div class="controls col-xs-9">
 						<input type="text" class="form-control" name="search" value="{{ pager.get_search() }}"/>
 					</div>
 				</div>
 				{% endblock pager_filters %}
 				<div class="form-group">
-					<div class="controls col-lg-offset-2 col-lg-5">
+					<div class="controls col-xs-offset-3 col-lg-5">
 						<button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
 					</div>
 				</div>
@@ -137,11 +137,14 @@
 		<div class="panel-heading">
 			{{ pager.item_count }} {% if pager.item_count == 1 %}{% trans "result" %}{% else %}{% trans "results" %}{% endif %}
 
+			{% if creatable %}
 			<div class="pull-right">
 				<a href="{{ env.module.get_module_path() }}?action=create">
-					<span class="glyphicon glyphicon-plus-sign"></span>	{% trans "Add" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}
+					<span class="glyphicon glyphicon-plus-sign"></span>
+					{% trans "Add" %} {% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}
 				</a>
 			</div>
+			{% endif %}
 		</div>
 		<div class="panel-body">
 			{% if pager.items|length > 0 %}
@@ -153,7 +156,10 @@
 								<th>{{ pager.create_header(definition.field, definition.field)|raw }}</th>
 							{% endfor %}
 						{% endblock pager_table_head %}
-						<th width="20">&nbsp;</th>
+
+						{% if editables|length > 0 %}
+							<th width="20">&nbsp;</th>
+						{% endif %}
 						{% if deletables|length > 0 %}
 							<th width="20">&nbsp;</th>
 						{% endif %}
@@ -167,11 +173,14 @@
 									<td>{{ attribute(object, definition.field) }}</td>
 								{% endfor %}
 							{% endblock pager_table_row %}
+
+							{% if object.id in editables %}
 							<td>
 								<a href="/{{ env.module.get_module_path() }}?action=edit&id={{ object.id }}" data-toggle="tooltip" title="{% trans "Edit object" %}">
 									<span class="glyphicon glyphicon-pencil"></span>
 								</a>
 							</td>
+							{% endif %}
 
 							{% if object.id in deletables %}
 							<td>

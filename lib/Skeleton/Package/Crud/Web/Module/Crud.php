@@ -68,6 +68,17 @@ abstract class Crud extends Module {
 		$template->assign('deletables', $deletables);
 
 		/**
+		 * Find the editables
+		 */
+		$editables = [];
+		foreach ($pager->items as $item) {
+			if ($this->is_editable($item)) {
+				$editables[] = $item->id;
+			}
+		}
+		$template->assign('editables', $editables);
+
+		/**
 		 * Get default fields for pager
 		 */
 		$classname = $pager->get_classname();
@@ -78,6 +89,11 @@ abstract class Crud extends Module {
 				unset($fields[$key]);
 			}
 		}
+
+		/**
+		 * Creatable
+		 */
+		$template->assign('creatable', $this->is_creatable());
 
 		$template->assign('default_fields', $fields);
 	}
@@ -134,6 +150,10 @@ abstract class Crud extends Module {
 	 * @access public
 	 */
 	public function display_create() {
+		if (!$this->is_creatable()) {
+			throw new \Exception('Cannot create object. Not allowed');
+		}
+
 		$template = Template::get();
 
 		/**
@@ -171,6 +191,27 @@ abstract class Crud extends Module {
 	 * @return bool $deletable
 	 */
 	public function is_deletable($object) {
+		return true;
+	}
+
+	/**
+	 * Is editable
+	 *
+	 * @access public
+	 * @param Object $object
+	 * @return bool $editable
+	 */
+	public function is_editable($object) {
+		return true;
+	}
+
+	/**
+	 * is creatable
+	 *
+	 * @access public
+	 * @return bool $creatable
+	 */
+	public function is_creatable() {
 		return true;
 	}
 
