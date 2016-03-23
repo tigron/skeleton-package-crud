@@ -24,7 +24,7 @@ Create a module in your application that extends from Skeleton\Package\Web\Modul
 	 * @author David Vandemaele <david@tigron.be>
 	 */
 
-	use Skeleton\Package\Crud\Web\Module\Crud
+	use Skeleton\Package\Crud\Web\Module\Crud;
 
 	class Web_Module_User extends Crud {
 
@@ -34,6 +34,15 @@ Create a module in your application that extends from Skeleton\Package\Web\Modul
 		 * @access public
 		 */
 		public $template = 'user.twig';
+
+		/**
+		 * Get the pager object
+		 * 
+		 * @access public
+		 * @return Pager $pager
+		 */
+		public function get_pager() {
+		}
 	}
 
 Create a template for your module that injects the generated templates into your layout
