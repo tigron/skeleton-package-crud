@@ -165,11 +165,20 @@ abstract class Crud extends Module {
 		if (isset($_POST['object'])) {
 			$object = new $classname();
 			$object->load_array($_POST['object']);
-			$object->save();
-			if ($this->is_editable($object)) {
-				Session::redirect($this->get_module_path() . '?action=edit&id=' . $object->id);
+			if (is_callable( [$object, 'validate'] )) {
+				$object->validate($errors);
 			} else {
-				Session::redirect($this->get_module_path());
+				$errors = [];
+			}
+			if (count($errors) > 0) {
+				$template->assign('errors', $errors);
+			} else {
+				$object->save();
+				if ($this->is_editable($object)) {
+					Session::redirect($this->get_module_path() . '?action=edit&id=' . $object->id);
+				} else {
+					Session::redirect($this->get_module_path());
+				}
 			}
 		}
 
