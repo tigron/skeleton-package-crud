@@ -241,6 +241,7 @@ abstract class Crud extends Module {
 		$classname = $pager->get_classname();
 		$object = $classname::get_by_id($_GET['id']);
 		$object->delete();
+		Session::set_sticky('message', 'object_deleted');
 		Session::redirect($this->get_module_path());
 	}
 

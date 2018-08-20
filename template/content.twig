@@ -115,6 +115,7 @@
 			<li class="active">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</li>
 		</ul>
 	{% endblock page_pager_breadcrumb %}
+
 	<div class="panel panel-default">
 		<div class="panel-heading">{% if object_name is defined %}{{ object_name }}{% else %}{{ pager.get_classname() }}{% endif %}</div>
 		<div class="panel-body">
@@ -135,6 +136,12 @@
 			</form>
 		</div>
 	</div>
+
+	{% if env.sticky_session.message == 'object_deleted' %}
+		<div class="alert alert-success alert-dismissable">
+		    {% trans "The object has been removed successfully." %}
+		</div>
+	{% endif %}
 
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -179,7 +186,7 @@
 
 							{% if object.id in editables %}
 							<td>
-								<a href="/{{ env.module.get_module_path() }}?action=edit&id={{ object.id }}" data-toggle="tooltip" title="{% trans "Edit object" %}">
+								<a href="{{ env.module.get_module_path() }}?action=edit&id={{ object.id }}" data-toggle="tooltip" title="{% trans "Edit object" %}">
 									<span class="glyphicon glyphicon-pencil"></span>
 								</a>
 							</td>
@@ -187,7 +194,7 @@
 
 							{% if object.id in deletables %}
 							<td>
-								<a href="/{{ env.module.get_module_path() }}?action=delete&id={{ object.id }}" data-confirm-title="{% trans "Please confirm" %}" data-confirm-message="{% trans "Are you sure you want to delete this object?" %}">
+								<a href="{{ env.module.get_module_path() }}?action=delete&id={{ object.id }}" data-confirm-title="{% trans "Please confirm" %}" data-confirm-message="{% trans "Are you sure you want to delete this object?" %}">
 									<span class="glyphicon glyphicon-trash"></span>
 								</a>
 							</td>
