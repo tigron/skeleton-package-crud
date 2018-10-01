@@ -117,10 +117,10 @@ abstract class Crud extends Module {
 
 		$fields = $classname::get_object_fields();
 		foreach ($fields as $key => $definition) {
-			if (substr($definition['field'], -3) == '_id') {
+			if (substr($definition['Field'], -3) == '_id') {
 				unset($fields[$key]);
 			}
-			if ($definition['field'] == 'id') {
+			if ($definition['Field'] == 'id') {
 				unset($fields[$key]);
 			}
 		}
@@ -186,10 +186,10 @@ abstract class Crud extends Module {
 
 		$fields = $classname::get_object_fields();
 		foreach ($fields as $key => $definition) {
-			if (substr($definition['field'], -3) == '_id') {
+			if (substr($definition['Field'], -3) == '_id') {
 				unset($fields[$key]);
 			}
-			if ($definition['field'] == 'id') {
+			if ($definition['Field'] == 'id') {
 				unset($fields[$key]);
 			}
 		}
