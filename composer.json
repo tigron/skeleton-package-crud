@@ -7,6 +7,7 @@
 		"tigron/skeleton-pager": "*"
     },
     "require" : {
+		"tigron/skeleton-core": ">=2"
     },
     "license": "MIT",
     "authors": [
