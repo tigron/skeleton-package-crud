@@ -180,7 +180,7 @@
 						<tr>
 							{% block pager_table_row %}
 								{% for definition in default_fields %}
-									<td>{{ attribute(object, definition.field) }}</td>
+									<td>{{ attribute(object, definition.Field) }}</td>
 								{% endfor %}
 							{% endblock pager_table_row %}
 
