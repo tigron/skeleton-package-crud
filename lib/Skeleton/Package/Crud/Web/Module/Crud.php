@@ -20,18 +20,18 @@ abstract class Crud extends Module {
 	 * Login required ?
 	 * Default = yes
 	 *
-	 * @access public
+	 * @access protected
 	 * @var bool $login_required
 	 */
-	public $login_required = false;
+	protected $login_required = false;
 
 	/**
 	 * Template to use
 	 *
-	 * @access public
+	 * @access protected
 	 * @var string $template
 	 */
-	public $template = '@skeleton-package-crud\content.twig';
+	protected $template = '@skeleton-package-crud\content.twig';
 
 	/**
 	 * Display method
