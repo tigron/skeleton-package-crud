@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Module Login
  *
@@ -9,36 +12,32 @@
 
 namespace Skeleton\Package\Crud\Web\Module;
 
-use \Skeleton\Pager\Web\Pager;
-use \Skeleton\Application\Web\Module;
-use \Skeleton\Application\Web\Template;
-use \Skeleton\Core\Http\Session;
+use Skeleton\Application\Web\Module;
+use Skeleton\Application\Web\Template;
+use Skeleton\Core\Http\Session;
 
 abstract class Crud extends Module {
-
 	/**
 	 * Login required ?
 	 * Default = yes
 	 *
 	 * @access protected
-	 * @var bool $login_required
 	 */
-	protected $login_required = false;
+	protected bool $login_required = false;
 
 	/**
 	 * Template to use
 	 *
 	 * @access protected
-	 * @var string $template
 	 */
-	protected $template = '@skeleton-package-crud\content.twig';
+	protected ?string $template = '@skeleton-package-crud\content.twig';
 
 	/**
 	 * Display method
 	 *
 	 * @access public
 	 */
-	public function display() {
+	public function display(): void {
 		/**
 		 * Initialize the template object
 		 */
@@ -85,7 +84,7 @@ abstract class Crud extends Module {
 		$fields = $classname::get_object_fields();
 
 		foreach ($fields as $key => $definition) {
-			if (substr($definition['Field'], -3) == '_id') {
+			if (substr($definition['Field'], -3) === '_id') {
 				unset($fields[$key]);
 			}
 		}
@@ -103,7 +102,7 @@ abstract class Crud extends Module {
 	 *
 	 * @access public
 	 */
-	public function display_edit() {
+	public function display_edit(): void {
 		$template = Template::get();
 
 		/**
@@ -117,10 +116,10 @@ abstract class Crud extends Module {
 
 		$fields = $classname::get_object_fields();
 		foreach ($fields as $key => $definition) {
-			if (substr($definition['Field'], -3) == '_id') {
+			if (substr($definition['Field'], -3) === '_id') {
 				unset($fields[$key]);
 			}
-			if ($definition['Field'] == 'id') {
+			if ($definition['Field'] === 'id') {
 				unset($fields[$key]);
 			}
 		}
@@ -128,7 +127,7 @@ abstract class Crud extends Module {
 
 		if (isset($_POST['object'])) {
 			$object->load_array($_POST['object']);
-			if (is_callable( [$object, 'validate'] )) {
+			if (is_callable([$object, 'validate'])) {
 				$object->validate($errors);
 			} else {
 				$errors = [];
@@ -149,7 +148,7 @@ abstract class Crud extends Module {
 	 *
 	 * @access public
 	 */
-	public function display_create() {
+	public function display_create(): void {
 		if (!$this->is_creatable()) {
 			throw new \Exception('Cannot create object. Not allowed');
 		}
@@ -165,7 +164,7 @@ abstract class Crud extends Module {
 		if (isset($_POST['object'])) {
 			$object = new $classname();
 			$object->load_array($_POST['object']);
-			if (is_callable( [$object, 'validate'] )) {
+			if (is_callable([$object, 'validate'])) {
 				$object->validate($errors);
 			} else {
 				$errors = [];
@@ -186,10 +185,10 @@ abstract class Crud extends Module {
 
 		$fields = $classname::get_object_fields();
 		foreach ($fields as $key => $definition) {
-			if (substr($definition['Field'], -3) == '_id') {
+			if (substr($definition['Field'], -3) === '_id') {
 				unset($fields[$key]);
 			}
-			if ($definition['Field'] == 'id') {
+			if ($definition['Field'] === 'id') {
 				unset($fields[$key]);
 			}
 		}
@@ -200,10 +199,9 @@ abstract class Crud extends Module {
 	 * Is deletable
 	 *
 	 * @access public
-	 * @param Object $object
 	 * @return bool $deletable
 	 */
-	public function is_deletable($object) {
+	public function is_deletable(object $object): bool {
 		return true;
 	}
 
@@ -211,10 +209,9 @@ abstract class Crud extends Module {
 	 * Is editable
 	 *
 	 * @access public
-	 * @param Object $object
 	 * @return bool $editable
 	 */
-	public function is_editable($object) {
+	public function is_editable(object $object): bool {
 		return true;
 	}
 
@@ -224,7 +221,7 @@ abstract class Crud extends Module {
 	 * @access public
 	 * @return bool $creatable
 	 */
-	public function is_creatable() {
+	public function is_creatable(): bool {
 		return true;
 	}
 
@@ -233,7 +230,7 @@ abstract class Crud extends Module {
 	 *
 	 * @access public
 	 */
-	public function display_delete() {
+	public function display_delete(): void {
 		/**
 		 * Get the pager
 		 */
@@ -249,9 +246,6 @@ abstract class Crud extends Module {
 	 * Get pager
 	 *
 	 * @access public
-	 * @return Skeleton\Pager\Web\Pager $pager
 	 */
-	abstract public function get_pager();
-
-
+	abstract public function get_pager(): \Skeleton\Pager\Web\Pager;
 }
